@@ -1,21 +1,24 @@
-package org.hbrs.se.ws24;
+package org.hbrs.se.ws24.persistence;
 
 import com.mongodb.client.model.Filters;
 import java.util.ArrayList;
+import java.util.List;
+
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
+import org.hbrs.se.ws24.model.UserStory;
 
 public class MongoDBControllerImpl implements MongoDBControllerInterface {
 
-    private static final String MONGODB_COLLECTION = "demostory";
-    private static final String MONGODB_HOST = "iar-mongo.inf.h-brs.de";
+    private static final String MONGODB_COLLECTION = "UserStory";
+    private static final String MONGODB_HOST = "localhost";
     private static final int MONGODB_PORT = 27017;
-    private static final String MONGODB_DATABASE = "demo";
-    private static final String MONGODB_USERNAME = "demo";
-    private static final String MONGODB_PASSWORD = "demo!";
+    private static final String MONGODB_DATABASE = "UserStory";
+    private static final String MONGODB_USERNAME = "";
+    private static final String MONGODB_PASSWORD = "";
     private static final String MONGODB_AUTH_DATABASE = MONGODB_DATABASE;
 
     private MongoClient mongoClient;
@@ -76,8 +79,8 @@ public class MongoDBControllerImpl implements MongoDBControllerInterface {
         }
 
         @Override
-        public ArrayList<UserStory> listUserStories() {
-            ArrayList<UserStory> results = new ArrayList<UserStory>();
+        public List<UserStory> listUserStories() {
+            List<UserStory> results = new ArrayList<UserStory>();
             this.mongoCollection.find().map(this::documentToStory).into(results);
             return results;
         }

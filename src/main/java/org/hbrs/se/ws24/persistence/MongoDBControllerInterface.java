@@ -1,8 +1,11 @@
-package org.hbrs.se.ws24;
+package org.hbrs.se.ws24.persistence;
+
+import org.hbrs.se.ws24.model.UserStory;
 
 import java.util.ArrayList;
+import java.util.List;
 
- public interface MongoDBControllerInterface {
+public interface MongoDBControllerInterface {
         void openConnection();
         void closeConnection();
 
@@ -11,5 +14,5 @@ import java.util.ArrayList;
         void deleteUserStory(int id);
         void clearUserStories();
         UserStory readUserStory(int id);
-        ArrayList<UserStory> listUserStories();
+        List<UserStory> listUserStories();
  }

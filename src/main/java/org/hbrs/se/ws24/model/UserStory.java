@@ -1,4 +1,4 @@
-package org.hbrs.se.ws24;
+package org.hbrs.se.ws24.model;
 import java.io.Serializable;
 import java.util.Objects;
 
