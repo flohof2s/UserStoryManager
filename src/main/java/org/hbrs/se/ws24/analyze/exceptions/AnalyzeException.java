@@ -1,14 +1,15 @@
-package org.hbrs.se.ws24.persistence.exceptions;
+package org.hbrs.se.ws24.analyze.exceptions;
 
-public class PersistenceException extends Exception {
+import org.hbrs.se.ws24.persistence.exceptions.PersistenceException;
 
-    private ExceptionType exceptionType;
+public class AnalyzeException extends Exception{
+    private AnalyzeException.ExceptionType exceptionType;
 
-    public ExceptionType getExceptionTypeType() {
+    public AnalyzeException.ExceptionType getExceptionTypeType() {
         return this.exceptionType;
     }
 
-    public PersistenceException(ExceptionType exceptionType, String message) {
+    public AnalyzeException(AnalyzeException.ExceptionType exceptionType, String message) {
         super(message);
         this.exceptionType = exceptionType;
     }

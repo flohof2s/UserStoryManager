@@ -20,7 +20,11 @@ public class PersistenceStrategyMongoDB implements PersistenceStrategy {
         for(UserStory userStory : member){
             try {
                 mongoDBController.insertUserStory(userStory);
-            }catch (Exception e){
+            }
+            catch (IllegalStateException e){
+                throw new PersistenceException(PersistenceException.ExceptionType.DuplicatedId,e.getMessage());
+            }
+            catch (Exception e){
                 throw new PersistenceException(PersistenceException.ExceptionType.ConnectionNotAvailable,e.getMessage());
             }
         }

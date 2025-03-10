@@ -1,5 +1,9 @@
 package org.hbrs.se.ws24.control;
 
+import org.hbrs.se.ws24.analyze.Analyze;
+import org.hbrs.se.ws24.analyze.AnalyzeUserStory;
+import org.hbrs.se.ws24.analyze.dto.AnalyzeReturnObject;
+import org.hbrs.se.ws24.analyze.exceptions.AnalyzeException;
 import org.hbrs.se.ws24.control.exceptions.ContainerException;
 import org.hbrs.se.ws24.model.UserStory;
 import org.hbrs.se.ws24.persistence.PersistenceStrategy;
@@ -13,8 +17,10 @@ public class Container {
     private static final Container instance = new Container();
     private List<UserStory> userStories;
     private PersistenceStrategy p;
+    private Analyze<UserStory> analyzeStrategy;
 
     private Container(){
+        this.setAnalyzeStrategy(new AnalyzeUserStory());
         this.userStories = new ArrayList<UserStory>();
         Collections.sort(this.userStories);
     }
@@ -48,7 +54,23 @@ public class Container {
     }
 
 
+    public boolean containsID(int ID){
+        for(UserStory us:this.getCurrentList()){
+            if(us.getId()==ID){
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public UserStory getUserStoryByID(int ID){
+        for(UserStory us:this.getCurrentList()){
+            if(us.getId()==ID){
+                return us;
+            }
+        }
+        return null;
+    }
     public List<UserStory> getCurrentList(){
         return this.userStories;
     }
@@ -85,5 +107,42 @@ public class Container {
 
     public void setPersistenceStrategy(PersistenceStrategy p){
         this.p = p;
+    }
+
+    public void setAnalyzeStrategy(Analyze<UserStory> a){
+        this.analyzeStrategy = a;
+    }
+
+    public AnalyzeReturnObject analyze(UserStory us,boolean with_details, boolean with_hints) throws AnalyzeException {
+        try{
+            return this.analyzeStrategy.analyze(us,with_details,with_hints);
+        }catch(UnsupportedOperationException uoe){
+            throw new AnalyzeException(AnalyzeException.ExceptionType.ImplementationNotAvailable,"Es ist keine Implementation vorhanden");
+        }catch(NullPointerException npe ){
+            throw new AnalyzeException(AnalyzeException.ExceptionType.NoStrategyIsSet,"Es wurde keine Persistence Strategie gesetzt");
+        }catch(Exception e){
+            throw new AnalyzeException(AnalyzeException.ExceptionType.ConnectionNotAvailable,e.getMessage());
+        }
+    }
+
+    public double analyze() throws AnalyzeException{
+        double score = 0.0;
+        for(UserStory us : this.getCurrentList()){
+            score+=this.analyze(us,false,false).getScore();
+        }
+
+        return score / this.size();
+    }
+
+    public String getGrade(double score) throws AnalyzeException {
+        try{
+            return this.analyzeStrategy.getGrade(score);
+        }catch(UnsupportedOperationException uoe){
+            throw new AnalyzeException(AnalyzeException.ExceptionType.ImplementationNotAvailable,"Es ist keine Implementation vorhanden");
+        }catch(NullPointerException npe ){
+            throw new AnalyzeException(AnalyzeException.ExceptionType.NoStrategyIsSet,"Es wurde keine Persistence Strategie gesetzt");
+        }catch(Exception e){
+            throw new AnalyzeException(AnalyzeException.ExceptionType.ConnectionNotAvailable,e.getMessage());
+        }
     }
 }

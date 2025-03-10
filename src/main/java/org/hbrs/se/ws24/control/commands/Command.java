@@ -1,11 +1,13 @@
 package org.hbrs.se.ws24.control.commands;
 
+import org.hbrs.se.ws24.analyze.exceptions.AnalyzeException;
+
 import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
 public interface Command {
-    void execute(Map<String,String> params);
+    void execute(Map<String,String> params) throws AnalyzeException;
     void undo();
 
     String getDescription();

@@ -52,8 +52,26 @@ public class MongoDBControllerImpl implements MongoDBControllerInterface {
         }
 
         @Override
-        public void insertUserStory(UserStory story) {
+        public void insertUserStory(UserStory story) throws IllegalStateException{
+            if(!this.checkIDofUserStory(story)){
+                throw new IllegalStateException("Duplicate of ID: "+story.getId()+" found in database");
+            }
             this.mongoCollection.insertOne(this.storyToDocument(story));
+        }
+
+        public boolean checkIDofUserStory(UserStory story){
+            List<UserStory> storedStories = this.listUserStories();
+            boolean duplicate = false;
+
+            for(UserStory compare:storedStories){
+                if(story.getId()==compare.getId()){
+                    duplicate = true;
+                    break;
+                }
+            }
+
+
+            return !duplicate;
         }
 
         @Override

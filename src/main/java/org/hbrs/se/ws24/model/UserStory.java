@@ -1,4 +1,10 @@
 package org.hbrs.se.ws24.model;
+import org.hbrs.se.ws24.analyze.Analyze;
+import org.hbrs.se.ws24.analyze.AnalyzeUserStory;
+import org.hbrs.se.ws24.analyze.dto.AnalyzeReturnObject;
+import org.hbrs.se.ws24.analyze.exceptions.AnalyzeException;
+import org.hbrs.se.ws24.persistence.exceptions.PersistenceException;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -39,6 +45,8 @@ public class UserStory implements Comparable<UserStory>, Serializable {
 
     public UserStory() {
     }
+
+
 
     public String getAkzeptanzkriterium(){
         return this.akzeptanzkriterium;
@@ -115,16 +123,7 @@ public class UserStory implements Comparable<UserStory>, Serializable {
 
     @Override
     public String toString() {
-        return "UserStory{" +
-                "titel='" + titel + '\'' +
-                ", aufwand=" + aufwand +
-                ", id=" + id +
-                ", mehrwert=" + mehrwert +
-                ", risk=" + risk +
-                ", strafe=" + strafe +
-                ", prio=" + prio +
-                ", project='" + project + '\'' +
-                '}';
+        return String.format("%3s %20s %20s %5s %20s",this.getId(),this.getTitel(),this.getAkzeptanzkriterium(),(double)Math.round(this.getPrio()*100)/100,this.getProject());
     }
 
     @Override

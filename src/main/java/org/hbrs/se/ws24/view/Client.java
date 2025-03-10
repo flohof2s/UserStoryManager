@@ -1,5 +1,6 @@
 package org.hbrs.se.ws24.view;
 
+import org.hbrs.se.ws24.analyze.exceptions.AnalyzeException;
 import org.hbrs.se.ws24.control.Container;
 import org.hbrs.se.ws24.control.commands.*;
 
@@ -34,7 +35,11 @@ public class Client {
             if(!this.commands.containsKey(command[0])){
                 System.out.println("Der Befehl \"" + command[0] + "\" wurde nicht erkannt. Nutze \"help\" für Hilfe!");
             }else{
-                this.commands.get(command[0]).execute(this.getParams(command));
+                try {
+                    this.commands.get(command[0]).execute(this.getParams(command));
+                } catch (Exception e) {
+                    System.out.println("Es ist ein Fehler aufgetreten: "+e.getMessage());
+                }
             }
         }
     }
@@ -42,6 +47,13 @@ public class Client {
     private Map<String,String> getParams(String[] paramList){
         Map<String,String> params = new HashMap<>();
         for(int i=1;i<paramList.length;i+=2){
+
+            //Sonderfall: Erster Parameter kann ohne Argument angegeben werden. Dann ist es eine ID
+            if(i==1 && !paramList[i].startsWith("-")){
+                params.put("ID",paramList[i]);
+                i--;
+                continue;
+            }
             if(paramList.length==i+1){
                 params.put(paramList[i].replace("-",""),"");
             }else{
@@ -58,6 +70,7 @@ public class Client {
         map.put("store",new CommandStore(this.con));
         map.put("dump",new CommandDump(this.con));
         map.put("load",new CommandLoad(this.con));
+        map.put("analyze",new CommandAnalyze(this.con));
 
         Map<String,String> commandDescriptions = new HashMap<>();
         map.forEach( (k, v) -> { commandDescriptions.put(k,v.getDescription()); } );
