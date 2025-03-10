@@ -13,8 +13,8 @@ public class CommandHelp implements Command{
     }
 
     @Override
-    public void undo() {
-
+    public boolean undo() {
+        return false;
     }
 
     @Override

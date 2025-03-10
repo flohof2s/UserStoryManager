@@ -4,20 +4,19 @@ import org.hbrs.se.ws24.analyze.exceptions.AnalyzeException;
 import org.hbrs.se.ws24.control.Container;
 import org.hbrs.se.ws24.control.commands.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Client {
     private Container con;
     private Scanner sc;
 
     private Map<String,Command> commands;
+    private Stack<Command> commandStack;
     public Client(Container con){
         this.con=con;
         this.sc = new Scanner(System.in);
         this.commands = this.initCommands();
+        this.commandStack = new Stack<>();
 
         this.start(this.con,this.sc);
         sc.close();
@@ -34,9 +33,27 @@ public class Client {
             }
             if(!this.commands.containsKey(command[0])){
                 System.out.println("Der Befehl \"" + command[0] + "\" wurde nicht erkannt. Nutze \"help\" für Hilfe!");
+            }else if(command[0].equals("undo")) {
+                boolean undo = false;
+                while(!undo){
+                    if(this.commandStack.isEmpty()){
+                        System.out.println("nothing to undo!");
+                        break;
+                    }
+                    Command comm = this.commandStack.pop();
+                    try{
+                        undo = comm.undo();
+                    }
+                    catch(Exception e){
+                        System.out.println("Es ist ein Fehler aufgetreten: "+e.getMessage());
+                    }
+                }
             }else{
                 try {
-                    this.commands.get(command[0]).execute(this.getParams(command));
+                    Command comm = this.commands.get(command[0]);
+                    comm.execute(this.getParams(command));
+                    this.commandStack.push(comm);
+
                 } catch (Exception e) {
                     System.out.println("Es ist ein Fehler aufgetreten: "+e.getMessage());
                 }
@@ -71,11 +88,14 @@ public class Client {
         map.put("dump",new CommandDump(this.con));
         map.put("load",new CommandLoad(this.con));
         map.put("analyze",new CommandAnalyze(this.con));
+        map.put("addElement",new CommandAddElement(this.con));
+        map.put("actors",new CommandActors(this.con));
 
         Map<String,String> commandDescriptions = new HashMap<>();
         map.forEach( (k, v) -> { commandDescriptions.put(k,v.getDescription()); } );
 
         map.put("help",new CommandHelp(commandDescriptions));
+        map.put("undo",new CommandUndo());
         return map;
     }
 }

@@ -4,7 +4,9 @@ import org.hbrs.se.ws24.analyze.Analyze;
 import org.hbrs.se.ws24.analyze.AnalyzeUserStory;
 import org.hbrs.se.ws24.analyze.dto.AnalyzeReturnObject;
 import org.hbrs.se.ws24.analyze.exceptions.AnalyzeException;
+import org.hbrs.se.ws24.control.commands.Command;
 import org.hbrs.se.ws24.control.exceptions.ContainerException;
+import org.hbrs.se.ws24.model.Actor;
 import org.hbrs.se.ws24.model.UserStory;
 import org.hbrs.se.ws24.persistence.PersistenceStrategy;
 import org.hbrs.se.ws24.persistence.exceptions.PersistenceException;
@@ -12,16 +14,18 @@ import org.hbrs.se.ws24.persistence.exceptions.PersistenceException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 
 public class Container {
     private static final Container instance = new Container();
     private List<UserStory> userStories;
+    private List<Actor> actors;
     private PersistenceStrategy p;
     private Analyze<UserStory> analyzeStrategy;
 
     private Container(){
-        this.setAnalyzeStrategy(new AnalyzeUserStory());
         this.userStories = new ArrayList<UserStory>();
+        this.actors = new ArrayList<>();
         Collections.sort(this.userStories);
     }
 
@@ -42,7 +46,7 @@ public class Container {
         this.userStories.add(userStory);
     }
 
-    public String deleteUserStory(Integer id) throws ContainerException {
+    public String deleteUserStory(int id) throws ContainerException {
 
         for(UserStory us : this.userStories){
             if(us.getId()==id){
@@ -75,6 +79,20 @@ public class Container {
         return this.userStories;
     }
 
+    public List<Actor> getActors(){
+        return this.actors;
+    }
+    public void addActor(Actor a){
+        this.actors.add(a);
+    }
+    public void removeActor(Actor a){
+        for(Actor actor:this.getActors()){
+            if(actor==a){
+                this.actors.remove(a);
+                break;
+            }
+        }
+    }
     public int size(){
         return this.userStories.size();
     }
