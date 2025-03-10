@@ -14,7 +14,18 @@ public class PersistenceStrategyMongoDB implements PersistenceStrategy {
 
     @Override
     public void save(List<UserStory> member) throws PersistenceException {
+        this.mongoDBController.openConnection();
 
+
+        for(UserStory userStory : member){
+            try {
+                mongoDBController.insertUserStory(userStory);
+            }catch (Exception e){
+                throw new PersistenceException(PersistenceException.ExceptionType.ConnectionNotAvailable,e.getMessage());
+            }
+        }
+
+        this.mongoDBController.closeConnection();
     }
 
     @Override

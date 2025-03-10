@@ -95,12 +95,13 @@ public class MongoDBControllerImpl implements MongoDBControllerInterface {
             doc.append("mehrwert", story.getMehrwert());
             doc.append("risk", story.getRisk());
             doc.append("strafe", story.getStrafe());
+            doc.append("akzeptanzkriterium",story.getAkzeptanzkriterium());
 
             return doc;
         }
 
         private UserStory documentToStory(Document doc){
-            UserStory story = new UserStory(doc.getInteger("id"), doc.getString("titel"), doc.getInteger("mehrwert"), doc.getInteger("strafe"), doc.getInteger("aufwand"), doc.getInteger("risk"), doc.getDouble("prio"));
+            UserStory story = new UserStory(doc.getInteger("id"), doc.getString("titel"), doc.getInteger("mehrwert"), doc.getInteger("strafe"), doc.getInteger("aufwand"), doc.getInteger("risk"),doc.getString("akzeptanzkriterium"),doc.getString("project"));
             story.setProject(doc.getString("project"));
             return story;
         }

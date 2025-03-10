@@ -11,6 +11,7 @@ public class UserStory implements Comparable<UserStory>, Serializable {
     private int strafe = 0;
     private double prio = 0.0;
     private String project;
+    private String akzeptanzkriterium;
 
     public String getProject() {
         return project;
@@ -24,17 +25,27 @@ public class UserStory implements Comparable<UserStory>, Serializable {
 
 
     public UserStory(int id, String titel, int mehrwert, int strafe,
-                     int aufwand, int risk, double prio) {
+                     int aufwand, int risk,String akzeptanzKriterium,String project) {
         this.id = id;
         this.titel = titel;
         this.mehrwert = mehrwert;
         this.strafe = strafe;
         this.aufwand = aufwand;
         this.risk = risk;
-        this.prio = prio;
+        this.project=project;
+        this.akzeptanzkriterium = akzeptanzKriterium;
+        this.prio = this.calculatePrio();
     }
 
     public UserStory() {
+    }
+
+    public String getAkzeptanzkriterium(){
+        return this.akzeptanzkriterium;
+    }
+
+    public void setAkzeptanzkriterium(String akzeptanzkriterium){
+        this.akzeptanzkriterium=akzeptanzkriterium;
     }
 
     public double getPrio() {
@@ -80,6 +91,10 @@ public class UserStory implements Comparable<UserStory>, Serializable {
     }
     public void setStrafe(int strafe) {
         this.strafe = strafe;
+    }
+
+    public float calculatePrio() {
+        return (float) (this.getMehrwert()+this.getStrafe())/(this.getAufwand()+this.getRisk());
     }
 
     /*
