@@ -1,8 +1,8 @@
 package org.hbrs.se.ws24.test;
 
-import org.hbrs.se.ws24.persistence.MongoDBControllerImpl;
-import org.hbrs.se.ws24.persistence.MongoDBControllerInterface;
-import org.hbrs.se.ws24.model.UserStory;
+import org.hbrs.se.ws24.infrastructureLayer.persistence.MongoDBControllerImpl;
+import org.hbrs.se.ws24.infrastructureLayer.persistence.MongoDBControllerInterface;
+import org.hbrs.se.ws24.domainLayer.UserStory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
