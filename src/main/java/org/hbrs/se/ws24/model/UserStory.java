@@ -10,6 +10,8 @@ import java.util.Objects;
 
 public class UserStory implements Comparable<UserStory>, Serializable {
     private String titel;
+    private String valueText;
+    private String actor;
     private int aufwand = 0;
     private int id = 0;
     private int mehrwert = 0;
@@ -31,7 +33,7 @@ public class UserStory implements Comparable<UserStory>, Serializable {
 
 
     public UserStory(int id, String titel, int mehrwert, int strafe,
-                     int aufwand, int risk,String akzeptanzKriterium,String project) {
+                     int aufwand, int risk,String akzeptanzKriterium,String project,String valueText,String actor) {
         this.id = id;
         this.titel = titel;
         this.mehrwert = mehrwert;
@@ -41,6 +43,8 @@ public class UserStory implements Comparable<UserStory>, Serializable {
         this.project=project;
         this.akzeptanzkriterium = akzeptanzKriterium;
         this.prio = this.calculatePrio();
+        this.valueText=valueText;
+        this.actor=actor;
     }
 
     public UserStory() {
@@ -101,6 +105,22 @@ public class UserStory implements Comparable<UserStory>, Serializable {
         this.strafe = strafe;
     }
 
+    public String getValueText() {
+        return valueText;
+    }
+
+    public void setValueText(String valueText) {
+        this.valueText = valueText;
+    }
+
+    public String getActor() {
+        return actor;
+    }
+
+    public void setActor(String actor) {
+        this.actor = actor;
+    }
+
     public float calculatePrio() {
         return (float) (this.getMehrwert()+this.getStrafe())/(this.getAufwand()+this.getRisk());
     }
@@ -123,7 +143,7 @@ public class UserStory implements Comparable<UserStory>, Serializable {
 
     @Override
     public String toString() {
-        return String.format("%3s %20s %20s %5s %20s",this.getId(),this.getTitel(),this.getAkzeptanzkriterium(),(double)Math.round(this.getPrio()*100)/100,this.getProject());
+        return String.format("%3s %20s %40s %10s %20s %5s %20s",this.getId(),this.getTitel(),this.getValueText(),this.getActor(),this.getAkzeptanzkriterium(),(double)Math.round(this.getPrio()*100)/100,this.getProject());
     }
 
     @Override

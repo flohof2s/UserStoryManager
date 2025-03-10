@@ -74,7 +74,13 @@ public class Client {
             if(paramList.length==i+1){
                 params.put(paramList[i].replace("-",""),"");
             }else{
-                params.put(paramList[i].replace("-",""),paramList[i+1]);
+                if(paramList[i+1].startsWith("--")){
+                    params.put(paramList[i].replace("-",""),"");
+                    i--;
+                }
+                else{
+                    params.put(paramList[i].replace("-",""),paramList[i+1]);
+                }
             }
 
         }

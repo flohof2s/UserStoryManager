@@ -17,11 +17,11 @@ public class UserStoryView {
         }
 
         Collections.sort(outputList);
-        System.out.println(String.format("%3s %20s %20s %5s %20s","ID","Titel","Akzeptanzkriterium","Prio","Projekt"));
-        System.out.println("----------------------------------------------------------------------------");
+        System.out.println(String.format("%3s %20s %40s %10s %20s %5s %20s","ID","Titel","Mehrwert","Akteur","Akzeptanzkriterium","Prio","Projekt"));
+        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------");
         for(UserStory item : outputList){
             System.out.println(item);
         }
-        System.out.println("----------------------------------------------------------------------------");
+        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------");
     }
 }

@@ -25,6 +25,8 @@ public class CommandEnter implements Command{
         String title = this.readLine("Wie soll Ihre User Story heißen?",sc);
         int ID = this.readLine("Welche ID soll Ihre User Story haben?",sc,0,Integer.MAX_VALUE);
         sc.nextLine();
+        String actor = this.readLine("Aus welcher Sicht wird diese UserStory geschrieben?",sc);
+        String valueText = this.readLine("Beschreiben Sie den Mehrwert, den die User Story haben soll!",sc);
         String acceptanceCriteria = this.readLine("Welches Akzeptanzkriterium soll Ihre User Story haben?",sc);
         int relValue = this.readLine("Welchen Relativen Mehrwert hat Ihre User Story? (1-5)",sc,1,5);
         int relPenalty = this.readLine("Welche Relative Strafe hat Ihre User Story? (1-5)",sc,1,5);
@@ -34,7 +36,7 @@ public class CommandEnter implements Command{
         String project = this.readLine("Zu welchem Projekt gehört Ihre User Story?",sc);
 
         try{
-            UserStory us = new UserStory(ID,title,relValue,relPenalty,expense,relRisk,acceptanceCriteria,project);
+            UserStory us = new UserStory(ID,title,relValue,relPenalty,expense,relRisk,acceptanceCriteria,project,valueText,actor);
             con.addUserStory(us);
             this.addedUserStories.push(us);
         } catch (ContainerException e) {

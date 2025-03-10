@@ -79,6 +79,14 @@ public class Container {
         return this.userStories;
     }
 
+    public boolean containsActor(String name){
+        for(Actor actor:this.getActors()){
+            if(actor.getName().equals(name)){
+                return true;
+            }
+        }
+        return false;
+    }
     public List<Actor> getActors(){
         return this.actors;
     }
@@ -133,7 +141,7 @@ public class Container {
 
     public AnalyzeReturnObject analyze(UserStory us,boolean with_details, boolean with_hints) throws AnalyzeException {
         try{
-            return this.analyzeStrategy.analyze(us,with_details,with_hints);
+            return this.analyzeStrategy.analyze(us,Container.getInstance(),with_details,with_hints);
         }catch(UnsupportedOperationException uoe){
             throw new AnalyzeException(AnalyzeException.ExceptionType.ImplementationNotAvailable,"Es ist keine Implementation vorhanden");
         }catch(NullPointerException npe ){

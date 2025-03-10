@@ -37,7 +37,26 @@ public class CommandAnalyze implements Command {
 
             AnalyzeReturnObject aro = con.analyze(con.getUserStoryByID(id),params.containsKey("details"),params.containsKey("hints"));
 
-            System.out.println("Work in progress...");
+            String returnString = "Die User Story mit der ID "+id+" hat folgende Qualität:\n"+aro.getScore()+"% ("+aro.getGrade()+")";
+            if(params.containsKey("details")){
+                returnString += "\n\nDetails:\n";
+                if(aro.getDetails().size()==0){
+                    returnString+="Alles ok\n";
+                }
+                for(String detail : aro.getDetails()){
+                    returnString+=detail+"\n";
+                }
+            }
+            if(params.containsKey("hints")){
+                returnString += "\n\nHints:\n";
+                if(aro.getHints().size()==0){
+                    returnString+="Alles ok\n";
+                }
+                for(String hint : aro.getHints()){
+                    returnString+=hint+"\n";
+                }
+            }
+            System.out.println(returnString);
         }
         else if (params.containsKey("all")) {
             if(params.containsKey("details") || params.containsKey("hints")){
