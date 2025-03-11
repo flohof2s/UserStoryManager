@@ -49,6 +49,7 @@ public class MongoDBControllerImpl implements MongoDBControllerInterface {
             this.mongoClient.close();
             this.mongoDatabase = null;
             this.mongoCollection = null;
+            this.mongoClient = null;
         }
 
         @Override

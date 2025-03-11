@@ -4,6 +4,7 @@ import org.hbrs.se.ws24.applicationLayer.Container;
 import org.hbrs.se.ws24.applicationLayer.exceptions.ContainerException;
 import org.hbrs.se.ws24.domainLayer.UserStory;
 
+import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Stack;
@@ -53,5 +54,35 @@ public class CommandEnter implements Command{
     @Override
     public String getDescription() {
         return "Fügt eine neue User Story hinzu";
+    }
+
+    private int readLine(String message, Scanner sc, int min, int max){
+        System.out.println(message);
+        try{
+            int result = sc.nextInt();
+            if(result<min || result>max){
+                System.out.println("Bitte geben Sie einen Wert zwischen "+min+" und "+max+" ein!");
+                return this.readLine(message,sc,min,max);
+            }
+            return result;
+        } catch (InputMismatchException e){
+            System.out.println("Sie müssen eine gültige Zahl als Eingabe wählen!");
+            sc.nextLine();
+            return this.readLine(message,sc,min,max);
+        } catch (Exception e){
+            System.out.println("Es ist ein Fehler aufgetreten: "+e.getMessage());
+            sc.nextLine();
+            return this.readLine(message,sc,min,max);
+        }
+    }
+    private String readLine(String message,Scanner sc){
+        System.out.println(message);
+        try{
+            return sc.nextLine();
+        }catch(Exception e){
+            System.out.println("Es ist ein Fehler aufgetreten: "+e.getMessage());
+            sc.nextLine();
+            return this.readLine(message,sc);
+        }
     }
 }
